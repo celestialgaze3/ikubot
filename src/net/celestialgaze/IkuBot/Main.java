@@ -1,6 +1,7 @@
 package net.celestialgaze.IkuBot;
 
 import net.celestialgaze.IkuBot.command.Commands;
+import net.celestialgaze.IkuBot.database.BotInfo;
 import net.celestialgaze.IkuBot.database.Database;
 import net.celestialgaze.IkuBot.listeners.MessageListener;
 import net.dv8tion.jda.api.JDA;
@@ -21,8 +22,9 @@ public class Main {
 	
 	public static void startBot() throws Exception {
 		// Start our JDA instance and block until ready
-		bot = JDABuilder.createDefault(Config.BOT_TOKEN).build();
+		bot = JDABuilder.createDefault(BotInfo.instance.getToken()).build();
 		bot.awaitReady();
+		Iku.bot = bot;
 		Iku.log("Logged in as " + Iku.getFullUser());
 		bot.addEventListener(new MessageListener());
 	}

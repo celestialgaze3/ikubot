@@ -4,6 +4,9 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import net.celestialgaze.IkuBot.command.commands.HelpCommand;
+import net.celestialgaze.IkuBot.command.commands.PingCommand;
+import net.celestialgaze.IkuBot.command.commands.PrefixCommand;
 import net.celestialgaze.IkuBot.command.commands.TestCommand;
 import net.celestialgaze.IkuBot.command.module.CommandModule;
 import net.celestialgaze.IkuBot.command.module.CommandModules;
@@ -12,6 +15,9 @@ import net.dv8tion.jda.api.entities.Guild;
 public class Commands {
 	public static void init() {
 		Command.addBaseCommand(new TestCommand());
+		Command.addBaseCommand(new PingCommand());
+		Command.addBaseCommand(new PrefixCommand());
+		Command.addBaseCommand(new HelpCommand());
 		CommandModules.init();
 	}
 	/**
