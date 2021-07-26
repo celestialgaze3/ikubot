@@ -28,7 +28,7 @@ public class CommandInterpreter {
 		String[] args = str.split(" ");
 		
 		// Get the first command
-		Command currentCmd = Command.baseCommands.get(args[0]);
+		Command currentCmd = Commands.getBaseCommands(message.getGuild()).get(args[0]);
 		if (currentCmd == null) return false; // Was not a valid command.
 		
 		int argsBeginIndex = 1;
