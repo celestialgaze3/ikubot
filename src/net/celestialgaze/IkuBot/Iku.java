@@ -23,7 +23,7 @@ public class Iku {
 	}
 	
 	/**
-	 * @return The name of the bot's user
+	 * @return The name of the bot's user including the tag
 	 */
 	public static String getFullUser() {
 		return getUser().getAsTag();
@@ -41,17 +41,16 @@ public class Iku {
 	 * @param str String to log
 	 */
 	public static void log(String str) {
-		System.out.println("[INFO] [" + IkuUtil.getTimestamp() + "] " + str);
+		System.out.println("[" + IkuUtil.getTimestamp() + "] [INFO] " + str);
 	}
 	
-
-	private static final String ANSI_RED = "\u001B[31m";
 	/**
 	 * Errors to console
 	 * @param str Error message
 	 */
 	public static void error(String str) {
-		System.out.println(ANSI_RED + "[ERROR] [" + IkuUtil.getTimestamp() + "] " + str);
+		final String ANSI_RED = "\u001B[31m";
+		System.out.println(ANSI_RED + "[" + IkuUtil.getTimestamp() + "] [ERROR] " + str);
 	}
 	
 }

@@ -7,7 +7,7 @@ public class BotInfo extends DatabaseElement {
 	public static BotInfo instance;
 	
 	String token;
-	public void BotInfo() {
+	public BotInfo() {
 		load();
 	}
 	
@@ -19,7 +19,6 @@ public class BotInfo extends DatabaseElement {
 	}
 
 	public String getToken() {
-		load();
 		return token;
 	}
 

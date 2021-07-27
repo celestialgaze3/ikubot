@@ -5,6 +5,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import net.celestialgaze.IkuBot.command.commands.HelpCommand;
+import net.celestialgaze.IkuBot.command.commands.ModuleCommand;
 import net.celestialgaze.IkuBot.command.commands.PingCommand;
 import net.celestialgaze.IkuBot.command.commands.PrefixCommand;
 import net.celestialgaze.IkuBot.command.commands.TestCommand;
@@ -18,6 +19,7 @@ public class Commands {
 		Command.addBaseCommand(new PingCommand());
 		Command.addBaseCommand(new PrefixCommand());
 		Command.addBaseCommand(new HelpCommand());
+		Command.addBaseCommand(new ModuleCommand());
 		CommandModules.init();
 	}
 	/**
@@ -34,7 +36,7 @@ public class Commands {
 		}
 		
 		// Module commands
-		for (CommandModule module : CommandModules.list) {
+		for (CommandModule module : CommandModules.list.values()) {
 			if (module.isEnabled(guild)) // Add enabled modules only
 				for (Entry<String, Command> entry : module.getCommands().entrySet()) {
 					commands.put(entry.getKey(), entry.getValue());

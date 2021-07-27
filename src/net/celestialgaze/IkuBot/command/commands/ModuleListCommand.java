@@ -6,31 +6,18 @@ import net.celestialgaze.IkuBot.command.module.CommandModules;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.Message;
 
-public class HelpCommand extends Command {
+public class ModuleListCommand extends Command {
 
-	public HelpCommand() {
-		super("help");
+	public ModuleListCommand() {
+		super("list");
 	}
 
 	@Override
 	public void run(String[] args, Message message) {
 		EmbedBuilder embed = new EmbedBuilder();
-		
-		// Add module commands in individual fields
 		for (CommandModule module : CommandModules.list.values()) {
-			if (!module.isEnabled(message.getGuild())) continue;
-			String fieldDesc = "";
-			for (Command c : module.getCommands().values()) {
-				fieldDesc += c.getName() + "\n";
-			}
-			embed.addField(module.getName(), fieldDesc, false);
+			embed.appendDescription(module.getName() + ": " + (module.isEnabled(message.getGuild()) ? "Enabled" : "Disabled") + "\n");
 		}
-		
-		// Base commands should show up at the top
-		for (Command c : Command.baseCommands.values()) {
-			embed.appendDescription(c.getName() + "\n");
-		}
-		
 		message.getChannel().sendMessageEmbeds(embed.build()).queue();
 	}
 

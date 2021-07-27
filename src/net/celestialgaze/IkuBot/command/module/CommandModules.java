@@ -1,16 +1,31 @@
 package net.celestialgaze.IkuBot.command.module;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
-import net.celestialgaze.IkuBot.command.commands.modules.ModuleTestCommand;
+import net.celestialgaze.IkuBot.command.commands.modules.xp.XpCommand;
+import net.celestialgaze.IkuBot.command.commands.modules.xp.XpLbCommand;
 
 public class CommandModules {
-	public static List<CommandModule> list = new ArrayList<CommandModule>();
+	public static Map<String, CommandModule> list = new HashMap<String, CommandModule>();
 	
 	
 	public static void init() {
-		CommandModule test = new CommandModule("Test", new ModuleTestCommand());
-		list.add(test);
+		list.put(Module.XP.getInternalName(), new XpModule(
+			new XpCommand(),
+			new XpLbCommand()
+		));
+	}
+	
+	public static enum Module {
+		XP;
+		
+		public String getInternalName() {
+			return this.getName().toLowerCase();
+		}
+		
+		public String getName() {
+			return this.toString();
+		}
 	}
 }
