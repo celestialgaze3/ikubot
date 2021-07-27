@@ -9,7 +9,9 @@ import net.dv8tion.jda.api.entities.Message;
 public class ModuleEnableCommand extends Command {
 
 	public ModuleEnableCommand() {
-		super("enable");
+		super("enable",
+			  "Enable a module",
+			  "<module>");
 	}
 
 	@Override

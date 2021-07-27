@@ -8,7 +8,9 @@ import net.dv8tion.jda.api.entities.Message;
 public class PrefixCommand extends Command {
 
 	public PrefixCommand() {
-		super("prefix");
+		super("prefix",
+			  "Get or set the prefix of your server",
+			  "[prefix]");
 	}
 
 	@Override

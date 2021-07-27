@@ -7,7 +7,9 @@ import net.dv8tion.jda.api.entities.Message;
 public class TestTestCommand extends Command {
 
 	public TestTestCommand() {
-		super("test");
+		super("test", 
+		      "an incredible subcommand of the test command. that also tests. it's awesomeazing", 
+			  "");
 	}
 
 	@Override

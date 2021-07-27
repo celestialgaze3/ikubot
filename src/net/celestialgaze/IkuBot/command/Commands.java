@@ -20,6 +20,7 @@ public class Commands {
 		Command.addBaseCommand(new PrefixCommand());
 		Command.addBaseCommand(new HelpCommand());
 		Command.addBaseCommand(new ModuleCommand());
+		Command.addBaseCommand(new TextCommand("source", "Get a link to the bot's source on GitHub", "https://github.com/celestialgaze3/ikubot"));
 		CommandModules.init();
 	}
 	/**

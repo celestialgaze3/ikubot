@@ -7,7 +7,9 @@ import net.dv8tion.jda.api.entities.Message;
 public class ModuleCommand extends Command {
 
 	public ModuleCommand() {
-		super("module");
+		super("module",
+			  "Commands to manage modules",
+			  "<subcommand>");
 	}
 
 	public void init() {

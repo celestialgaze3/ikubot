@@ -7,7 +7,9 @@ import net.dv8tion.jda.api.entities.Message;
 public class PingCommand extends Command {
 
 	public PingCommand() {
-		super("ping");
+		super("ping",
+			  "Get the bot's latency",
+			  "", "pang", "pung");
 	}
 
 	@Override

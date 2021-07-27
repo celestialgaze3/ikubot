@@ -9,7 +9,9 @@ import net.dv8tion.jda.api.entities.Message;
 public class ModuleListCommand extends Command {
 
 	public ModuleListCommand() {
-		super("list");
+		super("list",
+			  "Get a list of all modules",
+			  "");
 	}
 
 	@Override

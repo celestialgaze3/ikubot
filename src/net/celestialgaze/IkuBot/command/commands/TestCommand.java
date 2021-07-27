@@ -7,7 +7,9 @@ import net.dv8tion.jda.api.entities.Message;
 public class TestCommand extends Command {
 
 	public TestCommand() {
-		super("test");
+		super("test",
+			  "you won't believe how testy this test command is! (it tests)",
+			  "");
 	}
 
 	public void init() {

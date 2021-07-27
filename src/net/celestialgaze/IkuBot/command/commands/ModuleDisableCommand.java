@@ -9,7 +9,9 @@ import net.dv8tion.jda.api.entities.Message;
 public class ModuleDisableCommand extends Command {
 
 	public ModuleDisableCommand() {
-		super("disable");
+		super("disable",
+			  "Disable a module",
+			  "<module>");
 	}
 
 	@Override

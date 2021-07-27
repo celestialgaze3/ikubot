@@ -4,6 +4,8 @@ import java.time.Instant;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.List;
 
 public class IkuUtil {
 	
@@ -80,5 +82,53 @@ public class IkuUtil {
 			j++;
 		}
 		return newArray;
+	}
+	
+	/**
+	 * @param toParse String to parse
+	 * @return Whether or not it is an integer
+	 */
+	public static boolean isInteger(String toParse) {
+		try {
+			Integer.parseInt(toParse);
+			return true;
+		} catch (Exception e) {
+			return false;
+		}
+	}
+	
+	/**
+	 * @param toParse String to parse
+	 * @return The integer value, or 0 if it is not an integer.
+	 */
+	public static int getInteger(String toParse) {
+		try {
+			return Integer.parseInt(toParse);
+		} catch (Exception e) {
+			return 0;
+		}
+	}
+	
+	/**
+	 * Returns a list with no duplicate items
+	 * @param <T> type
+	 * @param list List to remove duplicates from
+	 * @return A new list containing no duplicate items
+	 */
+	public static <T> List<T> removeDuplicates(List<T> list) {
+		List<T> newList = new ArrayList<T>();
+		for (T element : list) {
+			if (!newList.contains(element)) newList.add(element);
+		}
+		return newList;
+	}
+	
+	/**
+	 * Rounds a double up
+	 * @param value Value to round up
+	 * @return Rounded up value (ex. 4.01 -> 5)
+	 */
+	public static int roundUpExact(double value) {
+		return Math.toIntExact(Math.round(Math.ceil(value)));
 	}
 }

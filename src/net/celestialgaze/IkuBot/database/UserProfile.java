@@ -97,7 +97,11 @@ public class UserProfile extends DatabaseElement {
 	public RestAction<Member> retrieveMember() {
 		return Iku.bot.getGuildById(serverId).retrieveMemberById(userId);
 	}
-	
+
+	public long getUserIdLong() {
+		return userId;
+	}
+
 	@Override
 	protected void load() {
 		if (loaded) return;
