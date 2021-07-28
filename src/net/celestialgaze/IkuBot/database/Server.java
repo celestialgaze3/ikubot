@@ -6,6 +6,7 @@ import java.util.Map;
 import org.bson.Document;
 
 import net.celestialgaze.IkuBot.Iku;
+import net.dv8tion.jda.api.entities.Message;
 
 public class Server extends DatabaseElement {
 	private static Map<Long, Server> cache = new HashMap<Long, Server>();
@@ -31,6 +32,12 @@ public class Server extends DatabaseElement {
 			cache.put(id, server);
 			return server;
 		}
+	}
+	
+	public static Server get(Message message) {
+		if (!message.isFromGuild()) return null;
+		long id = message.getGuild().getIdLong();
+		return Server.get(id);
 	}
 	
 	public String getPrefix() {

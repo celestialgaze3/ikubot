@@ -15,7 +15,11 @@ public abstract class CommandModule {
 	public CommandModule(String name, Command... commands) {
 		for (Command command : commands) {
 			this.name = name;
+			command.setModule(this);
 			this.commands.put(command.getName(), command);
+			for (String alias : command.getAliases()) {
+				this.commands.put(alias, command);
+			}
 		}
 	}
 	
@@ -23,7 +27,12 @@ public abstract class CommandModule {
 		return new ModuleSettings(guild, this);
 	}
 	
+	public boolean enabledByDefault() {
+		return enabledByDefault;
+	}
+	
 	public boolean isEnabled(Guild guild) {
+		if (guild == null) return enabledByDefault();
 		return getSettings(guild).getSetting("enabled", enabledByDefault);
 	}
 	

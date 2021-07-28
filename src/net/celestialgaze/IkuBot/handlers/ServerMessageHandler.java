@@ -19,7 +19,9 @@ public class ServerMessageHandler {
 			Guild guild = event.getGuild();
 			
 			// Run any commands
-			CommandInterpreter.runCommandFromMsg(message, Server.get(guild.getIdLong()).getPrefix());
+			if (CommandInterpreter.runCommandFromMsg(message, Server.get(message).getPrefix())) { // Command successfully ran
+				BotStats.instance.setCommandsRan(BotStats.instance.getCommandsRan() + 1);
+			}
 			
 			// Run any enabled modules onMessage method
 			for (CommandModule module : CommandModules.list.values()) {

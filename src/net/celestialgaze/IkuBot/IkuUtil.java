@@ -7,6 +7,9 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
+import net.dv8tion.jda.api.entities.Guild;
+import net.dv8tion.jda.api.entities.Message;
+
 public class IkuUtil {
 	
 	/**
@@ -32,7 +35,7 @@ public class IkuUtil {
 	public static String getTimestamp(String timezone, Instant instant) {
 		ZoneId zoneId = ZoneId.of(timezone);
 		ZonedDateTime zdt = ZonedDateTime.ofInstant(instant, zoneId);
-		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("uuuu-MM-dd@HH:mm:ss.ms");
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("uuuu-MM-dd@HH:mm:ss.SSS");
 		String output = zdt.format(formatter);
 		return output;
 	}
@@ -130,5 +133,13 @@ public class IkuUtil {
 	 */
 	public static int roundUpExact(double value) {
 		return Math.toIntExact(Math.round(Math.ceil(value)));
+	}
+	
+	/**
+	 * @param message Message to get guild from
+	 * @return The guild, or null if the message was not sent in a guild
+	 */
+	public static Guild getGuild(Message message) {
+		return (message.isFromGuild() ? message.getGuild() : null);
 	}
 }

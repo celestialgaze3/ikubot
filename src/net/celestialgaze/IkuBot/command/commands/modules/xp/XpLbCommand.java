@@ -16,6 +16,7 @@ public class XpLbCommand extends PagedCommand {
 		super("leaderboard",
 			  "See who has the most XP",
 			  "");
+		this.setUsableDMs(false);
 	}
 
 	@Override
@@ -32,6 +33,7 @@ public class XpLbCommand extends PagedCommand {
 		
 		for (int i = pagedMsg.getStartIndex(); i < profiles.size() && i <= pagedMsg.getEndIndex(); i++) {
 			UserProfile profile = profiles.get(i);
+			if (i == 0) embed.setThumbnail(message.getGuild().getMemberById(profile.getUserIdLong()).getUser().getAvatarUrl());
 			embed.appendDescription((i == 0 ? "**" : "") + (i + 1) + ". <@!" + profile.getUserIdLong() + "> - " + profile.getExperience() + " xp" + (i == 0 ? "**" : "") + "\n");
 		}
 		

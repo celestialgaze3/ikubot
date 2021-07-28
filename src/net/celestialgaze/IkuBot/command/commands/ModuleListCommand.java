@@ -1,5 +1,6 @@
 package net.celestialgaze.IkuBot.command.commands;
 
+import net.celestialgaze.IkuBot.IkuUtil;
 import net.celestialgaze.IkuBot.command.Command;
 import net.celestialgaze.IkuBot.command.module.CommandModule;
 import net.celestialgaze.IkuBot.command.module.CommandModules;
@@ -18,7 +19,7 @@ public class ModuleListCommand extends Command {
 	public void run(String[] args, Message message) {
 		EmbedBuilder embed = new EmbedBuilder();
 		for (CommandModule module : CommandModules.list.values()) {
-			embed.appendDescription(module.getName() + ": " + (module.isEnabled(message.getGuild()) ? "Enabled" : "Disabled") + "\n");
+			embed.appendDescription(module.getName() + ": " + (module.isEnabled(IkuUtil.getGuild(message)) ? "Enabled" : "Disabled") + "\n");
 		}
 		message.getChannel().sendMessageEmbeds(embed.build()).queue();
 	}

@@ -16,12 +16,13 @@ public class XpModule extends CommandModule {
 	public XpModule(Command... commands) {
 		super(CommandModules.Module.XP.getName(), commands);
 	}
+
+	final int expBaseIncrease = 10;
+	final int expChanceBonus = 5;
+	final long cooldownDurationMs = 15 * 1000;
 	
 	@Override
 	public void onMessage(MessageReceivedEvent event) {
-		final int expBaseIncrease = 10;
-		final int expChanceBonus = 5;
-		final long cooldownDurationMs = 15 * 1000;
 
 		User user = event.getAuthor();
 		Guild guild = event.getGuild();

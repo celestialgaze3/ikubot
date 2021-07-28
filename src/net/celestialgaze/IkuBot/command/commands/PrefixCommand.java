@@ -11,10 +11,12 @@ public class PrefixCommand extends Command {
 		super("prefix",
 			  "Get or set the prefix of your server",
 			  "[prefix]");
+		this.setUsableDMs(false);
 	}
 
 	@Override
 	public void run(String[] args, Message message) {
+		String prefix = getPrefix(message);
 		if (args.length >= 1) {
 			String requestedPrefix = IkuUtil.arrayToString(args, " ");
 			
@@ -24,11 +26,11 @@ public class PrefixCommand extends Command {
 				return;
 			}
 			
-			Server server = Server.get(message.getGuild().getIdLong());
+			Server server = Server.get(message);
 			server.setPrefix(requestedPrefix);
-			message.getChannel().sendMessage("This server's prefix is now `" + Server.get(message.getGuild().getIdLong()).getPrefix() + "`").queue();
+			message.getChannel().sendMessage("This server's prefix is now `" + prefix + "`").queue();
 		} else {
-			message.getChannel().sendMessage("This server's prefix is `" + Server.get(message.getGuild().getIdLong()).getPrefix() + "`").queue();
+			message.getChannel().sendMessage("This server's prefix is `" + prefix + "`").queue();
 		}
 	}
 

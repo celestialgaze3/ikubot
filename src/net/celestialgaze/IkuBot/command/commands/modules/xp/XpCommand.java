@@ -10,6 +10,7 @@ public class XpCommand extends Command {
 		super("xp",
 			  "Gets you info on your current xp",
 			  "");
+		this.setUsableDMs(false);
 	}
 
 	@Override

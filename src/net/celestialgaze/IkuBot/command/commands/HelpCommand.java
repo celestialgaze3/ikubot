@@ -12,7 +12,7 @@ import net.celestialgaze.IkuBot.command.PagedCommand;
 import net.celestialgaze.IkuBot.command.PagedMessage;
 import net.celestialgaze.IkuBot.command.module.CommandModule;
 import net.celestialgaze.IkuBot.command.module.CommandModules;
-import net.celestialgaze.IkuBot.database.Server;
+import net.celestialgaze.IkuBot.command.module.CustomCmdsModule;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.MessageEmbed;
@@ -25,27 +25,11 @@ public class HelpCommand extends PagedCommand {
 			  "");
 	}
 	
-	private String commandView(Command c, Message message) {
-		StringBuilder str = new StringBuilder();
-		String prefix = Server.get(message.getGuild().getIdLong()).getPrefix();
-		str.append("`");
-		str.append(prefix + c.getName());
-		for (String alias : c.getAliases()) {
-			str.append("|" + alias);
-		}
-		if (!c.getUsage().isBlank()) str.append(" " + c.getUsage());
-		str.append("`");
-		str.append("\n");
-		str.append(c.getDescription());
-		str.append("\n\n");
-		return str.toString();
-	}
-
+	
 	@Override
 	public MessageEmbed getUpdatedEmbed(Message message, PagedMessage pagedMsg) {
 		EmbedBuilder embed = new EmbedBuilder();
-		Server server = Server.get(message.getGuild().getIdLong());
-		String prefix = server.getPrefix();
+		String prefix = getPrefix(message);
 		
 		String[] args = CommandInterpreter.getArgs(message, prefix);
 		
@@ -60,7 +44,7 @@ public class HelpCommand extends PagedCommand {
 
 			boolean hasAModuleEnabled = false;
 			for (CommandModule module : CommandModules.list.values()) {
-				if (module.isEnabled(message.getGuild())) {
+				if (module.isEnabled(IkuUtil.getGuild(message))) {
 					hasAModuleEnabled = true;
 					embed.addField("**" + module.getName() + "**", "`" + prefix + "help " + module.getName()+"`", true);
 				}
@@ -76,30 +60,47 @@ public class HelpCommand extends PagedCommand {
 				CommandModule module = CommandModules.list.get(arg.toLowerCase());
 				embed.setAuthor(module.getName() + " Module Help Menu", null, Iku.getUser().getAvatarUrl());
 				
-				if (!module.isEnabled(message.getGuild())) {
+				if (!module.isEnabled(IkuUtil.getGuild(message))) {
 					embed.setDescription("That module isn't enabled! Do `" + prefix + "module enable " + module.getName() + "` to enable it.");
 					return embed.build();
 				}
+				
 				cmdList = IkuUtil.removeDuplicates(new ArrayList<Command>(module.getCommands().values()));
 				
-				
-			} else if (Commands.getBaseCommands(message.getGuild()).containsKey(arg)) { // Check if it's a valid command
-				Command c = Commands.getBaseCommands(message.getGuild()).get(arg);
-				embed.appendDescription(commandView(c, message));
+				// Add any custom commands to the custom cmds module
+				if (module instanceof CustomCmdsModule) {
+					CustomCmdsModule customCmds = (CustomCmdsModule) module;
+					for (Command c : customCmds.getCustomCommands(IkuUtil.getGuild(message))) {
+						cmdList.add(c);
+					}
+				}
+				embed.setFooter("Page " + pagedMsg.getPage() + " • <> required, [] optional", Iku.getUser().getAvatarUrl());
+			} else if (Commands.getBaseCommands(IkuUtil.getGuild(message)).containsKey(arg)) { // Check if it's a valid command
+				Command c = Commands.getBaseCommands(IkuUtil.getGuild(message)).get(arg);
+				embed.appendDescription(c.view(prefix));
 			} else if (arg.equalsIgnoreCase("core")) { // "Core" module (commands not part of a module)
 				cmdList = IkuUtil.removeDuplicates(new ArrayList<Command>(Command.baseCommands.values()));
+				embed.setFooter("Page " + pagedMsg.getPage() + " • <> required, [] optional", Iku.getUser().getAvatarUrl());
 			} else {
 				return embed.setDescription("Sorry, I couldn't find the module or command you want help with. Did you misspell something?").build();
+			}
+			
+			// Remove commands that can't be ran
+			List<Command> toRemove = new ArrayList<Command>();
+			for (Command c : cmdList) {
+				if (!c.canRun(message)) toRemove.add(c);
+			}
+			for (Command c : toRemove) {
+				cmdList.remove(c);
 			}
 			
 			// Paginating
 			pagedMsg.updatePageLimit(cmdList.size());
 			for (int i = pagedMsg.getStartIndex(); i < cmdList.size() && i <= pagedMsg.getEndIndex(); i++) {
 				Command c = cmdList.get(i);
-				embed.appendDescription(commandView(c, message));
+				embed.appendDescription(c.view(prefix));
 			}
 			
-			embed.setFooter("Page " + pagedMsg.getPage() + " • <> required, [] optional", Iku.getUser().getAvatarUrl());
 		}
 		
 		return embed.build();

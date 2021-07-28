@@ -33,7 +33,7 @@ public class CommandInterpreter {
 		String[] args = str.split(" ");
 		
 		// Get the first command
-		Command currentCmd = Commands.getBaseCommands(message.getGuild()).get(args[0].toLowerCase());
+		Command currentCmd = Commands.getBaseCommands(IkuUtil.getGuild(message)).get(args[0].toLowerCase());
 		if (currentCmd == null) return false; // Was not a valid command.
 		
 		int argsBeginIndex = 1;
@@ -49,7 +49,9 @@ public class CommandInterpreter {
 		}
 		
 		String[] cutArgs = IkuUtil.cutArray(args, argsBeginIndex, args.length - 1);
-		currentCmd.run(cutArgs, message);
+		if (currentCmd.canRun(message))
+			currentCmd.run(cutArgs, message);
+		else message.getChannel().sendMessage(currentCmd.getReason(message)).queue();
 		
 		return true;
 	}
@@ -74,7 +76,7 @@ public class CommandInterpreter {
 		String[] args = str.split(" ");
 		
 		// Get the first command
-		Command currentCmd = Commands.getBaseCommands(message.getGuild()).get(args[0].toLowerCase());
+		Command currentCmd = Commands.getBaseCommands(IkuUtil.getGuild(message)).get(args[0].toLowerCase());
 		if (currentCmd == null) return null; // Was not a valid command.
 		
 		int argsBeginIndex = 1;

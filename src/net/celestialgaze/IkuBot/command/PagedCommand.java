@@ -3,7 +3,6 @@ package net.celestialgaze.IkuBot.command;
 import net.celestialgaze.IkuBot.IkuUtil;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.MessageEmbed;
-import net.dv8tion.jda.api.requests.RestAction;
 
 public abstract class PagedCommand extends Command {
 	public PagedCommand(String name, String description, String usage, String... aliases) {

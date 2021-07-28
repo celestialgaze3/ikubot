@@ -18,7 +18,7 @@ public class Database {
 	public static MongoCollection<Document> server; // Storing data for each server
 	public static MongoCollection<Document> user; // Storing data for each user
 	
-	public static final String IP = "192.168.0.17";
+	public static final String IP = "localhost";
 	
 	public static void init() {
 		mongoClient = MongoClients.create("mongodb://" + IP + ":27017");

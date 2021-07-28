@@ -1,9 +1,11 @@
 package net.celestialgaze.IkuBot.command;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import net.celestialgaze.IkuBot.IkuUtil;
 import net.celestialgaze.IkuBot.command.commands.HelpCommand;
 import net.celestialgaze.IkuBot.command.commands.ModuleCommand;
 import net.celestialgaze.IkuBot.command.commands.PingCommand;
@@ -11,6 +13,7 @@ import net.celestialgaze.IkuBot.command.commands.PrefixCommand;
 import net.celestialgaze.IkuBot.command.commands.TestCommand;
 import net.celestialgaze.IkuBot.command.module.CommandModule;
 import net.celestialgaze.IkuBot.command.module.CommandModules;
+import net.celestialgaze.IkuBot.command.module.CustomCmdsModule;
 import net.dv8tion.jda.api.entities.Guild;
 
 public class Commands {
@@ -31,17 +34,40 @@ public class Commands {
 	public static Map<String, Command> getBaseCommands(Guild guild) {
 		Map<String, Command> commands = new HashMap<String, Command>();
 		
-		// Base commands
-		for (Entry<String, Command> entry : Command.baseCommands.entrySet()) {
-			commands.put(entry.getKey(), entry.getValue());
-		}
-		
-		// Module commands
-		for (CommandModule module : CommandModules.list.values()) {
-			if (module.isEnabled(guild)) // Add enabled modules only
-				for (Entry<String, Command> entry : module.getCommands().entrySet()) {
-					commands.put(entry.getKey(), entry.getValue());
+		if (guild != null) {
+			// Base commands
+			for (Entry<String, Command> entry : Command.baseCommands.entrySet()) {
+				commands.put(entry.getKey(), entry.getValue());
+			}
+			
+			// Module commands
+			for (CommandModule module : CommandModules.list.values()) {
+				if (module.isEnabled(guild)) { // Add enabled modules only
+					for (Entry<String, Command> entry : module.getCommands().entrySet()) {
+						commands.put(entry.getKey(), entry.getValue());
+					}
+					if (module instanceof CustomCmdsModule) {
+						CustomCmdsModule customCmds = (CustomCmdsModule) module;
+						for (Command c : customCmds.getCustomCommands(guild)) {
+							commands.put(c.getName(), c);
+						}
+					}
 				}
+			}
+		} else {
+			// Base commands
+			for (Entry<String, Command> entry : Command.baseCommands.entrySet()) {
+				commands.put(entry.getKey(), entry.getValue());
+			}
+						
+			// Module commands
+			for (CommandModule module : CommandModules.list.values()) {
+				if (module.enabledByDefault()) {
+					for (Command c : IkuUtil.removeDuplicates(new ArrayList<Command>(module.getCommands().values()))) {
+						commands.put(c.getName(), c);
+					}
+				}
+			}
 		}
 		
 		return commands;

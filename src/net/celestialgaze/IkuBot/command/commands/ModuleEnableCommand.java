@@ -12,6 +12,7 @@ public class ModuleEnableCommand extends Command {
 		super("enable",
 			  "Enable a module",
 			  "<module>");
+		this.setUsableDMs(false);
 	}
 
 	@Override
@@ -20,7 +21,7 @@ public class ModuleEnableCommand extends Command {
 			String moduleName = IkuUtil.arrayToString(args, " ");
 			CommandModule module = CommandModules.list.get(moduleName.toLowerCase());
 			if (module != null) {
-				module.setEnabled(message.getGuild(), true);
+				module.setEnabled(IkuUtil.getGuild(message), true);
 				message.getChannel().sendMessage("Enabled module " + module.getName() + " successfully").queue();
 			} else {
 				message.getChannel().sendMessage("A module by the name of " + moduleName + " was not found").queue();
