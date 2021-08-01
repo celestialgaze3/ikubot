@@ -10,15 +10,19 @@ import net.celestialgaze.IkuBot.IkuUtil;
 import net.celestialgaze.IkuBot.command.module.CommandModule;
 import net.celestialgaze.IkuBot.database.Server;
 import net.dv8tion.jda.api.Permission;
+import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Message;
 
 public abstract class Command {
 	public static Map<String, Command> baseCommands = new HashMap<String, Command>();
+	
 	protected String name;
 	protected String description;
 	protected String usage;
 	
-	Permission[] permissions;
+	List<Permission> permissions = new ArrayList<Permission>();
+	List<Permission> permissionsToRun = new ArrayList<Permission>();
+	protected boolean inheritsModulePermissions = false;
 	protected boolean usableDMs = true;
 	
 	protected CommandModule module;
@@ -71,9 +75,8 @@ public abstract class Command {
 	}
 	
 	public void addSubcommand(Command command) {
-		command.setModule(module);
 		command.setParent(this);
-		command.setPermission(permissions);
+		command.setPermissions(permissions.toArray(new Permission[permissions.size()]));
 		subcommands.put(command.getName(), command);
 		for (String alias : command.getAliases()) {
 			subcommands.put(alias, command);
@@ -96,8 +99,9 @@ public abstract class Command {
 		this.module = module;
 		for (Command c : subcommands.values()) {
 			c.setModule(module);
+			c.moduleInit();
 		}
-		
+		moduleInit();
 	}
 	
 	public boolean isUsableDMs() {
@@ -108,22 +112,37 @@ public abstract class Command {
 		this.usableDMs = usableDMs;
 	}
 	
-	public Permission[] getPermissions() {
+	public List<Permission> getPermissions() {
 		return permissions;
 	}
 
-	public void setPermission(Permission... permissions) {
-		this.permissions = permissions;
+	public void setPermissions(Permission... permissions) {
+		for (Permission p : permissions) {
+			this.permissions.add(p);
+		}
 		for (Command c : subcommands.values()) {
-			c.setPermission(permissions);
+			c.setPermissions(permissions);
 		}
 	}
 	
-	public String getPrefix(Message message) {
+	public List<Permission> getPermissionsRequired() {
+		return permissionsToRun;
+	}
+
+	public void setPermissionsRequired(Permission... permissions) {
+		for (Permission p : permissions) {
+			this.permissionsToRun.add(p);
+		}
+		for (Command c : subcommands.values()) {
+			c.setPermissionsRequired(permissions);
+		}
+	}
+	
+	public static String getPrefix(Message message) {
 		return message.isFromGuild() ? Server.get(message).getPrefix() : Iku.DEFAULT_PREFIX;
 	}
 	
-	public String getQuoteArg(String[] args, int i) {
+	public static String getQuoteArg(String[] args, int i) {
 		List<Integer> quoteIndexes = new ArrayList<Integer>();
 		if (args.length >= 1) {
 			int index = 0;
@@ -146,7 +165,7 @@ public abstract class Command {
 		}
 	}
 	
-	public String getFullStringArg(String[] args) {
+	public static String getFullStringArg(String[] args) {
 		if (args.length >= 1) {
 			return IkuUtil.arrayToString(args, " ");
 		} else {
@@ -166,7 +185,7 @@ public abstract class Command {
 		if (!getUsage().isBlank()) str.append(" " + getUsage());
 		str.append("`");
 		str.append("\n");
-		str.append(getDescription());
+		str.append(getDescription().replace("${prefix}", prefix));
 		str.append("\n\n");
 		return str.toString();
 	}
@@ -211,24 +230,46 @@ public abstract class Command {
 		}
 	}
 	
+	public boolean meetsArgCount(Message message, String[] args, int count) {
+		if (args.length < count) {
+			message.getChannel().sendMessage("Not enough arguments").queue();
+			return false;
+		}
+		return true;
+	}
+	
 	public boolean canRun(Message message) {
 		return getReason(message) == null;
 	}
 	
 	public String getReason(Message message) {
-		// Not enough permissions
-		if (permissions != null) {
-			for (Permission p : permissions) {
-				if (!message.getMember().hasPermission(p)) {
-					return "Not enough permissions; need the " + p.toString() + " permission.";
+		if (message.isFromGuild()) {
+
+			// User does not have enough permissions
+			if (permissions != null) {
+				for (Permission p : permissions) {
+					if (!message.getMember().hasPermission(p)) {
+						return "Not enough permissions; need the " + p.toString() + " permission.";
+					}
 				}
 			}
+
+			// Bot does not have enough permissions
+			if (permissionsToRun != null) {
+				Member self = Iku.getMember(message.getGuild());
+				for (Permission p : permissionsToRun) {
+					if (!self.hasPermission(p)) return "Not enough permissions; need the " + p.toString() + " permission.";
+				}
+			}
+			
+		} else {
+			if (!usableDMs) return "This command is not available in DMs";
 		}
-		if (!message.isFromGuild() && !usableDMs) return "This command is not available in DMs";
 		
 		return null;
 	}
 	
 	public abstract void run(String args[], Message message);
 	public void init() {}
+	public void moduleInit() {}
 }

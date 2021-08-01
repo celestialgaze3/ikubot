@@ -10,7 +10,7 @@ public class CustomCmdCommand extends MasterCommand {
 			  "Manage custom commands within your server", 
 			  "<subcommand>", 
 			  "cc");
-		this.setPermission(Permission.MANAGE_SERVER);
+		this.setPermissions(Permission.MANAGE_SERVER);
 	}
 
 	@Override

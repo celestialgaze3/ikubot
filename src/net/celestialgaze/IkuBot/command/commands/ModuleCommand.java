@@ -7,10 +7,11 @@ public class ModuleCommand extends MasterCommand {
 	public ModuleCommand() {
 		super("module",
 			  "Commands to manage modules",
-			  "<subcommand>");
+			  "[subcommand]");
 	}
 
 	public void init() {
+		super.init();
 		addSubcommand(new ModuleListCommand());
 		addSubcommand(new ModuleEnableCommand());
 		addSubcommand(new ModuleDisableCommand());

@@ -119,7 +119,7 @@ public class UserProfile extends DatabaseElement {
 
 	@Override
 	protected Document findDocument(MongoCollection<Document> collection) {
-		Document doc = collection.find(Filters.eq("serverId", serverId)).filter(Filters.eq("userId", userId)).first();
+		Document doc = collection.find(Filters.and(Filters.eq("serverId", serverId), Filters.eq("userId", userId))).first();
 		if (doc == null) {
 			collection.insertOne(getDefaultDocument());
 			return getDefaultDocument();

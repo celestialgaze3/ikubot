@@ -28,7 +28,7 @@ public class PrefixCommand extends Command {
 			
 			Server server = Server.get(message);
 			server.setPrefix(requestedPrefix);
-			message.getChannel().sendMessage("This server's prefix is now `" + prefix + "`").queue();
+			message.getChannel().sendMessage("This server's prefix is now `" + requestedPrefix + "`").queue();
 		} else {
 			message.getChannel().sendMessage("This server's prefix is `" + prefix + "`").queue();
 		}

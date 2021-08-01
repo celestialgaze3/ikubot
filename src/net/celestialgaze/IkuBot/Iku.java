@@ -1,12 +1,19 @@
 package net.celestialgaze.IkuBot;
 
+import java.awt.Color;
+
 import net.dv8tion.jda.api.JDA;
+import net.dv8tion.jda.api.entities.Guild;
+import net.dv8tion.jda.api.entities.Member;
+import net.dv8tion.jda.api.entities.Role;
 import net.dv8tion.jda.api.entities.SelfUser;
 
 public class Iku {
 	
 	public static JDA bot;
 	public static final String DEFAULT_PREFIX = "i!";
+	public static final Color EMBED_COLOR = Color.decode("#fff6cc");
+	public static final String EMBED_COLOR_HEX = IkuUtil.colorToHex(EMBED_COLOR);
 	
 	/**
 	 * @return The ID of the bot's user
@@ -37,11 +44,34 @@ public class Iku {
 	}
 	
 	/**
+	 * Gets the member instance for the bot for the specified guild
+	 * @param guild The guild to get the member for
+	 * @return The bot's member instance
+	 */
+	public static Member getMember(Guild guild) {
+		return guild.getMemberById(getUser().getIdLong());
+	}
+	
+	/**
+	 * @param guild The guild
+	 * @param role The role
+	 * @return Whether or not the bot can manage a role
+	 */
+	public static boolean canManageRole(Guild guild, Role role) {
+		boolean canManage = false;
+		for (Role r : Iku.getMember(guild).getRoles()) {
+			if (r.canInteract(role)) canManage = true;
+		}
+		return canManage;
+	}
+	
+	/**
 	 * Logs to console
 	 * @param str String to log
 	 */
 	public static void log(String str) {
 		System.out.println("[" + IkuUtil.getTimestamp() + "] [INFO] " + str);
+		if (str.contains("727")) System.out.println("WYSI");
 	}
 	
 	/**
@@ -49,8 +79,15 @@ public class Iku {
 	 * @param str Error message
 	 */
 	public static void error(String str) {
-		final String ANSI_RED = "\u001B[31m";
-		System.out.println(ANSI_RED + "[" + IkuUtil.getTimestamp() + "] [ERROR] " + str);
+		System.out.println("[" + IkuUtil.getTimestamp() + "] [ERROR] " + str);
 	}
 	
+	/**
+	 * Notifies the owner/moderators of a server in some way
+	 * @param guild Guild to notify
+	 * @param message Text
+	 */
+	public static void notify(Guild guild, String message) {
+		
+	}
 }

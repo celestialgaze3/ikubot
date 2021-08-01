@@ -1,13 +1,16 @@
 package net.celestialgaze.IkuBot.command.commands;
 
 import net.celestialgaze.IkuBot.IkuUtil;
-import net.celestialgaze.IkuBot.command.Command;
+import net.celestialgaze.IkuBot.command.PagedCommand;
+import net.celestialgaze.IkuBot.command.PagedMessage;
 import net.celestialgaze.IkuBot.command.module.CommandModule;
 import net.celestialgaze.IkuBot.command.module.CommandModules;
+import net.celestialgaze.IkuBot.database.Server;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.Message;
+import net.dv8tion.jda.api.entities.MessageEmbed;
 
-public class ModuleListCommand extends Command {
+public class ModuleListCommand extends PagedCommand {
 
 	public ModuleListCommand() {
 		super("list",
@@ -16,12 +19,13 @@ public class ModuleListCommand extends Command {
 	}
 
 	@Override
-	public void run(String[] args, Message message) {
+	public MessageEmbed getUpdatedEmbed(Message message, PagedMessage pagedMsg) {
 		EmbedBuilder embed = new EmbedBuilder();
+		embed.setColor(Server.get(message).getColor());
 		for (CommandModule module : CommandModules.list.values()) {
 			embed.appendDescription(module.getName() + ": " + (module.isEnabled(IkuUtil.getGuild(message)) ? "Enabled" : "Disabled") + "\n");
 		}
-		message.getChannel().sendMessageEmbeds(embed.build()).queue();
+		return embed.build();
 	}
 
 }

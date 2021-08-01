@@ -28,9 +28,9 @@ public class Main {
 	public static void startBot() throws Exception {
 		// Start our JDA instance and block until ready
 		bot = JDABuilder.createDefault(BotInfo.instance.getToken()) 
+		        .enableIntents(GatewayIntent.GUILD_MEMBERS)
 				.setChunkingFilter(ChunkingFilter.ALL) // enable member chunking for all guilds
 		        .setMemberCachePolicy(MemberCachePolicy.ALL) // ignored if chunking enabled
-		        .enableIntents(GatewayIntent.GUILD_MEMBERS)
 		        .build();
 		bot.awaitReady();
 		Iku.bot = bot;

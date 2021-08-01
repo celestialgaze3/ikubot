@@ -34,7 +34,8 @@ public class ServerMessageHandler {
 				Commands.getBaseCommands(guild).get("help").run(new String[0], message);
 			}
 		} catch (Exception e) {
-			event.getMessage().getChannel().sendMessage("Looks like there was an error...").queue();
+			event.getMessage().getChannel().sendMessage("Looks like there was an error... `"
+					+ e.getMessage() + "`").queue();
 			Iku.error("Error when received " + event.getMessage().getContentRaw() + ".");
 			BotStats.instance.setErrors(BotStats.instance.getErrors() + 1);
 			e.printStackTrace();

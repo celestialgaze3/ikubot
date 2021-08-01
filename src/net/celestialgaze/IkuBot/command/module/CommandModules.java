@@ -5,7 +5,6 @@ import java.util.Map;
 
 import net.celestialgaze.IkuBot.command.commands.modules.custom.CustomCmdCommand;
 import net.celestialgaze.IkuBot.command.commands.modules.xp.XpCommand;
-import net.celestialgaze.IkuBot.command.commands.modules.xp.XpLbCommand;
 
 public class CommandModules {
 	public static Map<String, CommandModule> list = new HashMap<String, CommandModule>();
@@ -14,8 +13,7 @@ public class CommandModules {
 	
 	public static void init() {
 		list.put(Module.XP.getInternalName(), new XpModule(
-			new XpCommand(),
-			new XpLbCommand()
+			new XpCommand()
 		));
 		
 		list.put(Module.CUSTOM.getInternalName(), new CustomCmdsModule(

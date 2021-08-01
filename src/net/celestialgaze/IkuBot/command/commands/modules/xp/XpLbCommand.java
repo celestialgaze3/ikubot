@@ -6,6 +6,8 @@ import java.util.List;
 
 import net.celestialgaze.IkuBot.command.PagedCommand;
 import net.celestialgaze.IkuBot.command.PagedMessage;
+import net.celestialgaze.IkuBot.command.module.XpModule;
+import net.celestialgaze.IkuBot.database.Server;
 import net.celestialgaze.IkuBot.database.UserProfile;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.Message;
@@ -15,7 +17,8 @@ public class XpLbCommand extends PagedCommand {
 	public XpLbCommand() {
 		super("leaderboard",
 			  "See who has the most XP",
-			  "");
+			  "",
+			  "lb");
 		this.setUsableDMs(false);
 	}
 
@@ -27,6 +30,7 @@ public class XpLbCommand extends PagedCommand {
 		EmbedBuilder embed = new EmbedBuilder();
 		embed.setAuthor(message.getGuild().getName(), null, message.getGuild().getIconUrl());
 		embed.setTitle("XP Leaderboard");
+		embed.setColor(Server.get(message).getColor());
 		
 		pagedMsg.setPageSize(10);
 		pagedMsg.updatePageLimit(profiles.size());
@@ -34,7 +38,7 @@ public class XpLbCommand extends PagedCommand {
 		for (int i = pagedMsg.getStartIndex(); i < profiles.size() && i <= pagedMsg.getEndIndex(); i++) {
 			UserProfile profile = profiles.get(i);
 			if (i == 0) embed.setThumbnail(message.getGuild().getMemberById(profile.getUserIdLong()).getUser().getAvatarUrl());
-			embed.appendDescription((i == 0 ? "**" : "") + (i + 1) + ". <@!" + profile.getUserIdLong() + "> - " + profile.getExperience() + " xp" + (i == 0 ? "**" : "") + "\n");
+			embed.appendDescription((i == 0 ? "**" : "") + (i + 1) + ". <@!" + profile.getUserIdLong() + "> - " + profile.getExperience() + " xp (Level " + XpModule.getLevel(profile.getExperience()) + ")" + (i == 0 ? "**" : "") + "\n");
 		}
 		
 		return embed.build();

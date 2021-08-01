@@ -1,18 +1,21 @@
 package net.celestialgaze.IkuBot.database;
 
+import java.awt.Color;
 import java.util.HashMap;
 import java.util.Map;
 
 import org.bson.Document;
 
 import net.celestialgaze.IkuBot.Iku;
+import net.celestialgaze.IkuBot.IkuUtil;
 import net.dv8tion.jda.api.entities.Message;
 
 public class Server extends DatabaseElement {
 	private static Map<Long, Server> cache = new HashMap<Long, Server>();
 	
 	long id;
-	String prefix = "!";
+	String prefix = Iku.DEFAULT_PREFIX;
+	Color color = Iku.EMBED_COLOR;
 	Document settings = new Document();
 	private Server(long id) {
 		this.id = id;
@@ -49,6 +52,15 @@ public class Server extends DatabaseElement {
 		save(Database.server, "prefix", prefix);
 	}
 	
+	public Color getColor() {
+		return color != null ? color : Iku.EMBED_COLOR;
+	}
+	
+	public void setColor(Color color) {
+		this.color = color;
+		save(Database.server, "color", IkuUtil.colorToHex(color));
+	}
+	
 	public Document getSettings() {
 		return settings;
 	}
@@ -70,7 +82,9 @@ public class Server extends DatabaseElement {
 	public void load() {
 		if (loaded) return;
 		Document doc = findDocument(Database.server);
-		prefix = doc.getString("prefix");
+		Document def = getDefaultDocument();
+		prefix = (String) doc.get("string", def.getString("prefix"));
+		color = Color.decode(doc.get("color", def.getString("color")));
 		settings = doc.get("settings", new Document());
 	}
 
@@ -79,6 +93,7 @@ public class Server extends DatabaseElement {
 		return new Document()
 				.append("id", id)
 				.append("prefix", Iku.DEFAULT_PREFIX)
+				.append("color", IkuUtil.colorToHex(Iku.EMBED_COLOR))
 				.append("settings", settings);
 	}
 
