@@ -23,7 +23,7 @@ public class ModuleEnableCommand extends Command {
 			CommandModule module = CommandModules.list.get(moduleName.toLowerCase());
 			if (module != null) {
 				module.setEnabled(IkuUtil.getGuild(message), true);
-				message.getChannel().sendMessage("Enabled module " + module.getName() + " successfully").queue();
+				Iku.sendSuccess(message, "Enabled module " + module.getName() + " successfully");
 			} else {
 				Iku.sendError(message, "A module by the name of " + moduleName + " was not found");
 			}

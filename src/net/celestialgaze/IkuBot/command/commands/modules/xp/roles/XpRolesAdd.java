@@ -47,7 +47,7 @@ public class XpRolesAdd extends Command {
 			}
 			xpRoles.put(level, role);
 			roles.setXpRoles(guild, xpRoles);
-			message.getChannel().sendMessage("Users will now gain the **" + role.getName() + "** role when they reach level " + level).queue();
+			Iku.sendSuccess(message, "Users will now gain the **" + role.getName() + "** role when they reach level " + level);
 		} else {
 			Iku.sendError(message, "Not a valid role");
 		}

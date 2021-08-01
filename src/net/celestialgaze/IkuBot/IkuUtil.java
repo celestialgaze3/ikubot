@@ -221,6 +221,7 @@ public class IkuUtil {
 	}
 	
 	
+	
 	/**
 	 * Converts a color's RGB to hex in the format #000000
 	 * @param color The color to convert

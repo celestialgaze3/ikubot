@@ -18,7 +18,6 @@ import net.dv8tion.jda.api.entities.Guild;
 
 public class Commands {
 	public static void init() {
-		Command.addBaseCommand(new TestCommand());
 		Command.addBaseCommand(new PingCommand());
 		Command.addBaseCommand(new PrefixCommand());
 		Command.addBaseCommand(new HelpCommand());

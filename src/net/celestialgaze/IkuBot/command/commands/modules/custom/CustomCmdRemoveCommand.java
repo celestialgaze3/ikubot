@@ -28,7 +28,7 @@ public class CustomCmdRemoveCommand extends Command {
 				return;
 			}
 			module.removeCustomCommand(guild, name.toLowerCase());
-			message.getChannel().sendMessage("Removed `" + name.toLowerCase() + "` command").queue();
+			Iku.sendSuccess(message, "Removed `" + name.toLowerCase() + "` command");
 		}
 	}
 

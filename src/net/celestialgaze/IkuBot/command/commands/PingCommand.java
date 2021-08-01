@@ -9,7 +9,7 @@ public class PingCommand extends Command {
 	public PingCommand() {
 		super("ping",
 			  "Get the bot's latency",
-			  "", "pang", "pung");
+			  "");
 	}
 
 	@Override

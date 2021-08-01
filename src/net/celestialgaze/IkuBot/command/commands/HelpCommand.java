@@ -63,12 +63,13 @@ public class HelpCommand extends PagedCommand {
 
 	private EmbedBuilder getMainHelpMenu(Message message) {
 		EmbedBuilder embed = new EmbedBuilder();
+		embed.setColor(getColor(message));
 		String prefix = getPrefix(message);
 		
 		embed.setAuthor(Iku.getName() + " Help Menu", null, Iku.getUser().getAvatarUrl());
 		embed.appendDescription("**Prefix: ** `" + prefix + "` All commands also work by mentioning the bot.\n");
-		embed.appendDescription("Get help with a specific command with `" + prefix + "help <command_name>`\n");
-		embed.appendDescription("See core commands that are not part of a module with `" + prefix + "help core`\n");
+		embed.appendDescription("Get help with a specific command with `" + prefix + "help <command>`\n");
+		embed.appendDescription("See other commands that are not part of a module with `" + prefix + "help core`\n");
 		embed.appendDescription("[Invite](https://discord.com/oauth2/authorize?client_id=869032530643398716&scope=bot&permissions=8589934591)");
 
 		boolean hasAModuleEnabled = false;
@@ -85,6 +86,7 @@ public class HelpCommand extends PagedCommand {
 	
 	private static EmbedBuilder getCommandHelpMenu(Message message, PagedMessage paged, String commandName) {
 		EmbedBuilder embed = new EmbedBuilder();
+		embed.setColor(getColor(message));
 		String prefix = getPrefix(message);
 		
 		Command c = Commands.getBaseCommands(IkuUtil.getGuild(message)).get(commandName);
@@ -94,6 +96,7 @@ public class HelpCommand extends PagedCommand {
 	
 	private static EmbedBuilder getModuleHelpMenu(Message message, PagedMessage paged, String moduleName) {
 		EmbedBuilder embed = new EmbedBuilder();
+		embed.setColor(getColor(message));
 		CommandModule module = CommandModules.list.get(moduleName.toLowerCase());
 		String prefix = getPrefix(message);
 		

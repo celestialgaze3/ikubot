@@ -14,7 +14,7 @@ public class XpRolesDelete extends Command {
 	public XpRolesDelete() {
 		super("delete", 
 			  "Remove a role from the list of roles to give", 
-			  "<role>", 
+			  "<level>", 
 			  "remove");
 	}
 	
@@ -34,7 +34,7 @@ public class XpRolesDelete extends Command {
 			xpRoles.remove(level);
 			roles.setXpRoles(guild, xpRoles);
 			
-			message.getChannel().sendMessage("Successfully removed role for level " + level).queue();
+			Iku.sendSuccess(message, "Successfully removed role for level " + level);
 		} else {
 			Iku.sendError(message, "Unable to remove role for level " + level + " as it does not exist");
 		}

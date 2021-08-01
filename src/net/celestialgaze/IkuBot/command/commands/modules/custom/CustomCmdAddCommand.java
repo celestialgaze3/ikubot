@@ -10,16 +10,17 @@ import net.dv8tion.jda.api.entities.Message;
 public class CustomCmdAddCommand extends Command {
 
 	public CustomCmdAddCommand() {
-		super("add", "Adds a custom command to your server", "\"name\" \"description\" \"text\"", "create");
+		super("add", "Adds a custom command to your server", "<name> \"description\" \"text\"", "create");
 	}
 
 	@Override
 	public void run(String[] args, Message message) {
+		if (!meetsArgCount(message, args, 2)) return;
 		CustomCmdsModule module = (CustomCmdsModule) this.module;
 		
-		String name = getQuoteArg(args, 0);
-		String description = getQuoteArg(args, 1);
-		String text = getQuoteArg(args, 2);
+		String name = args[0];
+		String description = getQuoteArg(args, 0);
+		String text = getQuoteArg(args, 1);
 		
 		if (name == null || description == null || text == null) {
 			Iku.sendError(message, "Not enough arguments");
@@ -30,7 +31,7 @@ public class CustomCmdAddCommand extends Command {
 				return;
 			}
 			module.addCustomCommand(IkuUtil.getGuild(message), name.toLowerCase(), description, text);
-			message.getChannel().sendMessage("Added `" + name.toLowerCase() + "` command").queue();
+			Iku.sendSuccess(message, "Added `" + name.toLowerCase() + "` command");
 		}
 	}
 

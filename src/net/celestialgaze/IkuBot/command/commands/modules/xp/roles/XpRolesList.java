@@ -16,7 +16,7 @@ public class XpRolesList extends PagedCommand {
 
 	public XpRolesList() {
 		super("list", 
-			  "Lists of roles to give", 
+			  "List of roles to give", 
 			  "");
 	}
 

@@ -1,5 +1,6 @@
 package net.celestialgaze.IkuBot.command.commands.modules.xp;
 
+import net.celestialgaze.IkuBot.Iku;
 import net.celestialgaze.IkuBot.command.MasterCommand;
 import net.celestialgaze.IkuBot.command.commands.modules.xp.roles.XpRoles;
 import net.celestialgaze.IkuBot.command.module.XpModule;
@@ -27,7 +28,7 @@ public class XpCommand extends MasterCommand {
 		int xp = UserProfile.get(message.getGuild().getIdLong(), message.getAuthor().getIdLong()).getExperience();
 		int level = XpModule.getLevel(xp);
 		int xpToLevel = XpModule.getXp(level + 1) - xp;
-		message.getChannel().sendMessage("You have `" + xp + "` xp (Level " + level + ", " + xpToLevel + "xp to level up)").queue();
+		Iku.send(message, "You have `" + xp + "` xp (Level " + level + ", " + xpToLevel + "xp to level up)");
 	}
 
 }

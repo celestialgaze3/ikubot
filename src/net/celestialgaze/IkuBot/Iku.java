@@ -83,12 +83,25 @@ public class Iku {
 		System.out.println("[" + IkuUtil.getTimestamp() + "] [ERROR] " + str);
 	}
 	
+	/**
+	 * Replies to a message with an error
+	 */
 	public static void sendError(Message message, String str) {
-		message.getChannel().sendMessage(str).queue(success -> {}, failure -> {});
+		message.getChannel().sendMessage(str.substring(0, str.length() <= 2000 ? str.length() : 2000)).queue(success -> {}, failure -> {});
 	}
 	
+	/**
+	 * Send method to avoid errors
+	 */
 	public static void send(Message message, String str) {
-		message.getChannel().sendMessage(str).queue(success -> {}, failure -> {});
+		message.getChannel().sendMessage(str.substring(0, str.length() <= 2000 ? str.length() : 2000)).queue(success -> {}, failure -> {});
+	}
+	
+	/**
+	 * Replies to a message indicating success
+	 */
+	public static void sendSuccess(Message message, String str) {
+		message.getChannel().sendMessage(str.substring(0, str.length() <= 2000 ? str.length() : 2000)).queue(success -> {}, failure -> {});
 	}
 	
 	/**
