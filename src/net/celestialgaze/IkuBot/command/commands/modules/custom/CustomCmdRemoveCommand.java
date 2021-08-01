@@ -1,5 +1,6 @@
 package net.celestialgaze.IkuBot.command.commands.modules.custom;
 
+import net.celestialgaze.IkuBot.Iku;
 import net.celestialgaze.IkuBot.IkuUtil;
 import net.celestialgaze.IkuBot.command.Command;
 import net.celestialgaze.IkuBot.command.module.CustomCmdsModule;
@@ -20,10 +21,10 @@ public class CustomCmdRemoveCommand extends Command {
 		String name = getFullStringArg(args);
 		
 		if (name == null) {
-			message.getChannel().sendMessage("Not enough arguments").queue();
+			Iku.sendError(message, "Not enough arguments");
 		} else {
 			if (!module.isCustomCommand(guild, name.toLowerCase())) {
-				message.getChannel().sendMessage("You cannot remove the command `" + name.toLowerCase() + "` as it does not exist").queue();
+				Iku.sendError(message, "You cannot remove the command `" + name.toLowerCase() + "` as it does not exist");
 				return;
 			}
 			module.removeCustomCommand(guild, name.toLowerCase());

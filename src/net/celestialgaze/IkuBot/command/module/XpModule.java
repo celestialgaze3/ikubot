@@ -56,7 +56,8 @@ public class XpModule extends CommandModule {
 				XpRoles xpRoles = XpRoles.instance;
 				
 				// Send levelup message
-				getLevelUpMsgChannel(event.getMessage()).sendMessage(user.getAsMention() + ", you're now Level " + level).queue();
+				if (!message.getAuthor().isBot()) getLevelUpMsgChannel(event.getMessage()).sendMessage(user.getAsMention() + ", you're now Level " + level)
+					.queue((success) -> {}, (error) -> {}); // Just ignore if we can't send a message to the user.
 				
 				// Give all roles for their level
 				List<Entry<Integer, Role>> roles = new ArrayList<Entry<Integer, Role>>(xpRoles.getXpRoles(guild).entrySet());
@@ -69,7 +70,7 @@ public class XpModule extends CommandModule {
 							guild.removeRoleFromMember(message.getMember(), entry.getValue()).queue();
 						}
 					} else {
-						message.getChannel().sendMessage("I can't manage the role " + entry.getValue().getName()).queue();
+						Iku.sendError(message, "I can't manage the role " + entry.getValue().getName());
 					}
 				}
 			}
@@ -96,9 +97,11 @@ public class XpModule extends CommandModule {
 		return message.getChannel();
 	}
 	
+	public static final int MAX_LEVEL = 100;
+	
 	public static int getXp(int level) {
-		if (level > 100) {
-			return levelXpMinimum.get(100);
+		if (level > MAX_LEVEL) {
+			return levelXpMinimum.get(MAX_LEVEL);
 		}
 		return levelXpMinimum.get(level);
 	}

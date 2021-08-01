@@ -1,5 +1,6 @@
 package net.celestialgaze.IkuBot.command.commands;
 
+import net.celestialgaze.IkuBot.Iku;
 import net.celestialgaze.IkuBot.IkuUtil;
 import net.celestialgaze.IkuBot.command.Command;
 import net.celestialgaze.IkuBot.command.module.CommandModule;
@@ -24,7 +25,7 @@ public class ModuleEnableCommand extends Command {
 				module.setEnabled(IkuUtil.getGuild(message), true);
 				message.getChannel().sendMessage("Enabled module " + module.getName() + " successfully").queue();
 			} else {
-				message.getChannel().sendMessage("A module by the name of " + moduleName + " was not found").queue();
+				Iku.sendError(message, "A module by the name of " + moduleName + " was not found");
 			}
 		}
 	}

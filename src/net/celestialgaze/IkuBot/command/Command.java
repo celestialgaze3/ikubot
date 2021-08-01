@@ -1,5 +1,6 @@
 package net.celestialgaze.IkuBot.command;
 
+import java.awt.Color;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -142,6 +143,10 @@ public abstract class Command {
 		return message.isFromGuild() ? Server.get(message).getPrefix() : Iku.DEFAULT_PREFIX;
 	}
 	
+	public static Color getColor(Message message) {
+		return message.isFromGuild() ? Server.get(message).getColor() : Iku.EMBED_COLOR;
+	}
+	
 	public static String getQuoteArg(String[] args, int i) {
 		List<Integer> quoteIndexes = new ArrayList<Integer>();
 		if (args.length >= 1) {
@@ -159,7 +164,7 @@ public abstract class Command {
 			if (quoteIndexes.size() <= i * 2 + 1) return null;
 			String isolated = IkuUtil.arrayToString(args, " ").substring(quoteIndexes.get(i * 2), quoteIndexes.get(i * 2 + 1));
 			isolated = isolated.substring(1, isolated.length());
-			return isolated;
+			return isolated.strip();
 		} else {
 			return null;
 		}
@@ -232,7 +237,7 @@ public abstract class Command {
 	
 	public boolean meetsArgCount(Message message, String[] args, int count) {
 		if (args.length < count) {
-			message.getChannel().sendMessage("Not enough arguments").queue();
+			Iku.sendError(message, "Not enough arguments");
 			return false;
 		}
 		return true;

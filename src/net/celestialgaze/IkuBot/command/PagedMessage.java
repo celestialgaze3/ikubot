@@ -2,7 +2,6 @@ package net.celestialgaze.IkuBot.command;
 
 import java.util.HashMap;
 import java.util.Map;
-
 import net.celestialgaze.IkuBot.Iku;
 import net.celestialgaze.IkuBot.IkuUtil;
 import net.dv8tion.jda.api.entities.Message;
@@ -10,6 +9,7 @@ import net.dv8tion.jda.api.entities.MessageEmbed;
 import net.dv8tion.jda.api.events.message.react.MessageReactionAddEvent;
 
 public abstract class PagedMessage {
+	
 	public static Map<Long, PagedMessage> list = new HashMap<Long, PagedMessage>();
 	public static final String NEXT_PAGE = "▶️";
 	public static final String PREV_PAGE = "◀️";

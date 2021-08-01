@@ -5,7 +5,6 @@ import net.celestialgaze.IkuBot.command.PagedCommand;
 import net.celestialgaze.IkuBot.command.PagedMessage;
 import net.celestialgaze.IkuBot.command.module.CommandModule;
 import net.celestialgaze.IkuBot.command.module.CommandModules;
-import net.celestialgaze.IkuBot.database.Server;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.MessageEmbed;
@@ -21,7 +20,7 @@ public class ModuleListCommand extends PagedCommand {
 	@Override
 	public MessageEmbed getUpdatedEmbed(Message message, PagedMessage pagedMsg) {
 		EmbedBuilder embed = new EmbedBuilder();
-		embed.setColor(Server.get(message).getColor());
+		embed.setColor(getColor(message));
 		for (CommandModule module : CommandModules.list.values()) {
 			embed.appendDescription(module.getName() + ": " + (module.isEnabled(IkuUtil.getGuild(message)) ? "Enabled" : "Disabled") + "\n");
 		}

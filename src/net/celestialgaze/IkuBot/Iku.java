@@ -5,6 +5,7 @@ import java.awt.Color;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Member;
+import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.Role;
 import net.dv8tion.jda.api.entities.SelfUser;
 
@@ -80,6 +81,14 @@ public class Iku {
 	 */
 	public static void error(String str) {
 		System.out.println("[" + IkuUtil.getTimestamp() + "] [ERROR] " + str);
+	}
+	
+	public static void sendError(Message message, String str) {
+		message.getChannel().sendMessage(str).queue(success -> {}, failure -> {});
+	}
+	
+	public static void send(Message message, String str) {
+		message.getChannel().sendMessage(str).queue(success -> {}, failure -> {});
 	}
 	
 	/**

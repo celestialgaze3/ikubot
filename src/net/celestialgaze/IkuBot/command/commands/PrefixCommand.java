@@ -1,5 +1,6 @@
 package net.celestialgaze.IkuBot.command.commands;
 
+import net.celestialgaze.IkuBot.Iku;
 import net.celestialgaze.IkuBot.IkuUtil;
 import net.celestialgaze.IkuBot.command.Command;
 import net.celestialgaze.IkuBot.database.Server;
@@ -18,11 +19,11 @@ public class PrefixCommand extends Command {
 	public void run(String[] args, Message message) {
 		String prefix = getPrefix(message);
 		if (args.length >= 1) {
-			String requestedPrefix = IkuUtil.arrayToString(args, " ");
+			String requestedPrefix = IkuUtil.arrayToString(args, " ").strip();
 			
-			final int prefixCharLimit = 100;
+			final int prefixCharLimit = 10;
 			if (requestedPrefix.length() > prefixCharLimit) {
-				message.getChannel().sendMessage("Sorry, the limit for prefix length is " + prefixCharLimit).queue();
+				Iku.sendError(message, "Sorry, the limit for prefix length is " + prefixCharLimit);
 				return;
 			}
 			

@@ -2,6 +2,7 @@ package net.celestialgaze.IkuBot.command.commands.modules.xp.roles;
 
 import java.util.Map;
 
+import net.celestialgaze.IkuBot.Iku;
 import net.celestialgaze.IkuBot.IkuUtil;
 import net.celestialgaze.IkuBot.command.Command;
 import net.dv8tion.jda.api.entities.Guild;
@@ -21,7 +22,7 @@ public class XpRolesDelete extends Command {
 	public void run(String[] args, Message message) {
 		if (!this.meetsArgCount(message, args, 1)) return;
 		if (!IkuUtil.isInteger(args[0])) {
-			message.getChannel().sendMessage("Not a valid level").queue();
+			Iku.sendError(message, "Not a valid level");
 			return;
 		}
 		Guild guild = message.getGuild();
@@ -35,7 +36,7 @@ public class XpRolesDelete extends Command {
 			
 			message.getChannel().sendMessage("Successfully removed role for level " + level).queue();
 		} else {
-			message.getChannel().sendMessage("Unable to remove role for level " + level + " as it does not exist").queue();
+			Iku.sendError(message, "Unable to remove role for level " + level + " as it does not exist");
 		}
 	}
 

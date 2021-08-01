@@ -7,7 +7,6 @@ import java.util.Map.Entry;
 
 import net.celestialgaze.IkuBot.command.PagedCommand;
 import net.celestialgaze.IkuBot.command.PagedMessage;
-import net.celestialgaze.IkuBot.database.Server;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.MessageEmbed;
@@ -24,7 +23,7 @@ public class XpRolesList extends PagedCommand {
 	@Override
 	public MessageEmbed getUpdatedEmbed(Message message, PagedMessage pagedMsg) {
 		EmbedBuilder embed = new EmbedBuilder();
-		embed.setColor(Server.get(message).getColor());
+		embed.setColor(getColor(message));
 		
 		XpRoles roles = (XpRoles) parent;
 		Map<Integer, Role> xpRoles = roles.getXpRoles(message.getGuild());

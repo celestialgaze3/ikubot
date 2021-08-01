@@ -7,7 +7,6 @@ import java.util.List;
 import net.celestialgaze.IkuBot.command.PagedCommand;
 import net.celestialgaze.IkuBot.command.PagedMessage;
 import net.celestialgaze.IkuBot.command.module.XpModule;
-import net.celestialgaze.IkuBot.database.Server;
 import net.celestialgaze.IkuBot.database.UserProfile;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.Message;
@@ -30,7 +29,7 @@ public class XpLbCommand extends PagedCommand {
 		EmbedBuilder embed = new EmbedBuilder();
 		embed.setAuthor(message.getGuild().getName(), null, message.getGuild().getIconUrl());
 		embed.setTitle("XP Leaderboard");
-		embed.setColor(Server.get(message).getColor());
+		embed.setColor(getColor(message));
 		
 		pagedMsg.setPageSize(10);
 		pagedMsg.updatePageLimit(profiles.size());

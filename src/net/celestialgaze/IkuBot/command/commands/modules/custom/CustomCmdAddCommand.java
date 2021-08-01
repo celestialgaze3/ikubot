@@ -1,5 +1,6 @@
 package net.celestialgaze.IkuBot.command.commands.modules.custom;
 
+import net.celestialgaze.IkuBot.Iku;
 import net.celestialgaze.IkuBot.IkuUtil;
 import net.celestialgaze.IkuBot.command.Command;
 import net.celestialgaze.IkuBot.command.Commands;
@@ -21,11 +22,11 @@ public class CustomCmdAddCommand extends Command {
 		String text = getQuoteArg(args, 2);
 		
 		if (name == null || description == null || text == null) {
-			message.getChannel().sendMessage("Not enough arguments").queue();
+			Iku.sendError(message, "Not enough arguments");
 		} else {
 			// Ensure no command overlapping happenes
 			if (Commands.getBaseCommands(IkuUtil.getGuild(message)).containsKey(name.toLowerCase())) {
-				message.getChannel().sendMessage("You cannot create a command with the name `" + name.toLowerCase() + "` as it already exists").queue();
+				Iku.sendError(message, "You cannot create a command with the name `" + name.toLowerCase() + "` as it already exists");
 				return;
 			}
 			module.addCustomCommand(IkuUtil.getGuild(message), name.toLowerCase(), description, text);

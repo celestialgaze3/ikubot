@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import net.celestialgaze.IkuBot.command.commands.HelpCommand;
-import net.celestialgaze.IkuBot.database.Server;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.MessageEmbed;
@@ -41,7 +40,7 @@ public class MasterCommand extends PagedCommand {
 	public MessageEmbed getUpdatedEmbed(Message message, PagedMessage pagedMsg) {
 		EmbedBuilder embed = new EmbedBuilder();
 		embed.setTitle(this.getFullName() + " subcommands");
-		embed.setColor(Server.get(message).getColor());
+		embed.setColor(getColor(message));
 		pagedMsg.setPageSize(7);
 		
 		List<Command> cmdList = new ArrayList<Command>(subcommands.values());

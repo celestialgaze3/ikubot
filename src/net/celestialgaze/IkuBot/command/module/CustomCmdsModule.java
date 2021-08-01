@@ -34,7 +34,7 @@ public class CustomCmdsModule extends CommandModule {
 		ModuleSettings settings = this.getSettings(guild);
 		
 		Document customCmds = settings.getDocument("commands");
-		customCmds.append(name, textCommand.asDocument());
+		customCmds.append(name.strip(), textCommand.asDocument());
 		settings.setDocument("commands", customCmds);
 	}
 	

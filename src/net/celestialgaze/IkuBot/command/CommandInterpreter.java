@@ -51,7 +51,7 @@ public class CommandInterpreter {
 		String[] cutArgs = IkuUtil.cutArray(args, argsBeginIndex, args.length - 1);
 		if (currentCmd.canRun(message))
 			currentCmd.run(cutArgs, message);
-		else message.getChannel().sendMessage(currentCmd.getReason(message)).queue();
+		else Iku.sendError(message, currentCmd.getReason(message));
 		
 		return true;
 	}

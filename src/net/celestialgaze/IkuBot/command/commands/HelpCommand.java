@@ -14,7 +14,6 @@ import net.celestialgaze.IkuBot.command.PagedMessage;
 import net.celestialgaze.IkuBot.command.module.CommandModule;
 import net.celestialgaze.IkuBot.command.module.CommandModules;
 import net.celestialgaze.IkuBot.command.module.CustomCmdsModule;
-import net.celestialgaze.IkuBot.database.Server;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.Member;
@@ -33,7 +32,7 @@ public class HelpCommand extends PagedCommand {
 	@Override
 	public MessageEmbed getUpdatedEmbed(Message message, PagedMessage pagedMsg) {
 		EmbedBuilder embed = new EmbedBuilder();
-		embed.setColor(Server.get(message).getColor());
+		embed.setColor(getColor(message));
 		String prefix = getPrefix(message);
 		
 		String[] args = CommandInterpreter.getArgs(message, prefix);
@@ -99,7 +98,7 @@ public class HelpCommand extends PagedCommand {
 		String prefix = getPrefix(message);
 		
 		embed.setTitle(module.getName() + " Module Help Menu");
-		embed.setColor(Server.get(message).getColor());
+		embed.setColor(getColor(message));
 		
 		if (!module.isEnabled(IkuUtil.getGuild(message))) {
 			embed.setDescription("That module isn't enabled! Do `" + prefix + "module enable " + module.getName() + "` to enable it.");
