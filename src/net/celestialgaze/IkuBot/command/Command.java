@@ -25,6 +25,7 @@ public abstract class Command {
 	List<Permission> permissionsToRun = new ArrayList<Permission>();
 	protected boolean inheritsModulePermissions = false;
 	protected boolean usableDMs = true;
+	protected boolean admin = false;
 	
 	protected CommandModule module;
 	
@@ -103,6 +104,10 @@ public abstract class Command {
 			c.moduleInit();
 		}
 		moduleInit();
+	}
+	
+	public void setAdmin(boolean admin) {
+		this.admin = admin;
 	}
 	
 	public boolean isUsableDMs() {
@@ -270,6 +275,8 @@ public abstract class Command {
 		} else {
 			if (!usableDMs) return "This command is not available in DMs";
 		}
+		
+		if (admin && !message.getAuthor().getId().equalsIgnoreCase("218525899535024129")) return "You are not a bot admin!";
 		
 		return null;
 	}

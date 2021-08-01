@@ -6,11 +6,12 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import net.celestialgaze.IkuBot.IkuUtil;
+import net.celestialgaze.IkuBot.command.commands.AvatarCommand;
 import net.celestialgaze.IkuBot.command.commands.HelpCommand;
 import net.celestialgaze.IkuBot.command.commands.ModuleCommand;
 import net.celestialgaze.IkuBot.command.commands.PingCommand;
 import net.celestialgaze.IkuBot.command.commands.PrefixCommand;
-import net.celestialgaze.IkuBot.command.commands.TestCommand;
+import net.celestialgaze.IkuBot.command.commands.SayCommand;
 import net.celestialgaze.IkuBot.command.module.CommandModule;
 import net.celestialgaze.IkuBot.command.module.CommandModules;
 import net.celestialgaze.IkuBot.command.module.CustomCmdsModule;
@@ -18,10 +19,12 @@ import net.dv8tion.jda.api.entities.Guild;
 
 public class Commands {
 	public static void init() {
+		Command.addBaseCommand(new AvatarCommand());
 		Command.addBaseCommand(new PingCommand());
 		Command.addBaseCommand(new PrefixCommand());
 		Command.addBaseCommand(new HelpCommand());
 		Command.addBaseCommand(new ModuleCommand());
+		Command.addBaseCommand(new SayCommand());
 		Command.addBaseCommand(new TextCommand("source", "Get a link to the bot's source on GitHub", "https://github.com/celestialgaze3/ikubot"));
 		CommandModules.init();
 	}

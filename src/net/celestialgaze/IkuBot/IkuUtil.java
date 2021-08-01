@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import net.dv8tion.jda.api.entities.Guild;
+import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.Role;
 
@@ -194,9 +195,8 @@ public class IkuUtil {
 		}
 		
 		// Try to get role by ID (or mention)
-		if (toParse.startsWith("<@&")) {
-			toParse = toParse.substring(3, toParse.length() - 1); // Remove mention stuff
-		}
+		if (toParse.startsWith("<@&")) toParse = toParse.substring(3, toParse.length() - 1); // Remove mention stuff
+		
 		if (isLong(toParse)) {
 			Role role = guild.getRoleById(getLong(toParse));
 			if (role != null) return role;
@@ -220,7 +220,43 @@ public class IkuUtil {
 		return true;
 	}
 	
-	
+	/**
+	 * Tries to get a member by name, mention, or ID
+	 * @param guild Guild to get member from
+	 * @param toParse String to get member from
+	 * @return The member, or null if none was found
+	 */
+	public static Member getMember(Guild guild, String toParse) {
+		Member member = null;
+		
+		if (toParse.startsWith("<@!")) toParse = toParse.substring(3, toParse.length() - 1); // Remove mention stuff
+		// Try to get member by ID
+		if (isLong(toParse)) {
+			member = guild.getMemberById(toParse);
+			if (member != null) return member;
+		}
+		
+		// Try to get member by name
+		List<Member> members = guild.getMembersByName(toParse, true);
+		if (members.size() > 0) {
+			return members.get(0);
+		}
+
+		// Try to get member by name#0000
+		try {
+			member = guild.getMemberByTag(toParse);
+			if (member != null) return member;
+		} catch (Exception e) {
+			// cry about it
+		}
+		
+		// Try to get member by nickname
+		members = guild.getMembersByNickname(toParse, true);
+		if (members.size() > 0) {
+			return members.get(0);
+		}
+		return null;
+	}
 	
 	/**
 	 * Converts a color's RGB to hex in the format #000000
