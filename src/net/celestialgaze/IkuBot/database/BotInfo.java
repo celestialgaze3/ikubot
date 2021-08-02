@@ -21,6 +21,11 @@ public class BotInfo extends DatabaseElement {
 	public String getToken() {
 		return token;
 	}
+	
+	public void setToken(String token) {
+		this.token = token;
+		save(Database.bot, "token", token);
+	}
 
 	@Override
 	protected Object getId() {

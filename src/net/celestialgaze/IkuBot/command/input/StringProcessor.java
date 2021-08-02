@@ -6,13 +6,13 @@ public class StringProcessor extends TypeProcessor {
 
 	@Override
 	public Pair<Integer, Integer> findFirst(String[] args) {
-		return Pair.of(0, args.length);
+		return Pair.of(0, args.length - 1);
 	}
 
 	@Override
 	public Object parse(String str) {
 		if (countQuotes(str) > 1) {
-			return str.substring(1, str.length() - 1);
+			return str.substring(1, str.lastIndexOf("\""));
 		}
 		return str;
 	}

@@ -169,7 +169,8 @@ public abstract class Command {
 		List<String> argsList = new ArrayList<String>(Arrays.asList(args));
 		MutableTriple<Object, Integer, Integer> returnValue = ArgumentType.process(args, fullName, type);
 		int alreadyRemoved = 0;
-		for (int i = returnValue.getMiddle(); i <= returnValue.getRight() && i >= 0; i++) {
+		
+		for (int i = returnValue.getMiddle(); i <= returnValue.getRight() && i >= 0 ; i++) {
 			argsList.remove(i - alreadyRemoved);
 			alreadyRemoved++;
 		}
@@ -177,15 +178,14 @@ public abstract class Command {
 		return Pair.of(returnValue.getLeft(), argsList.toArray(new String[argsList.size()]));
 	}
 	
-	public static Object processArgument(Message message, String[] args, String fullName, ArgumentType type) {
+	public static Pair<Object, String[]> processArgument(Message message, String[] args, String fullName, ArgumentType type) {
 		Pair<Object, String[]> value = getArgument(args, fullName, type);
 		if (value.getLeft() == null) {
 			Iku.sendError(message, "You must provide a value for " + fullName);
-			return null;
+			return Pair.of(null, args);
 		}
 		
-		args = value.getRight();
-		return value.getLeft();
+		return value;
 	}
 	
 	public Map<String, Object> processArguments(Message message, String[] args) {
@@ -195,10 +195,13 @@ public abstract class Command {
 		for (int i = 0; i < arguments.size(); i++) {
 			String name = keys.get(i);
 			Pair<String, ArgumentType> info = arguments.get(name);
-			Object processed = processArgument(message, args, name, info.getRight());
-			if (processed == null) return null;
-			map.put(name, processed);
+			Pair<Object, String[]> processed = processArgument(message, args, name, info.getRight());
+			Object result = processed.getLeft();
+			args = processed.getRight();
+			if (result == null) return null;
+			map.put(name, result);
 		}
+		
 		return map;
 	}
 	
@@ -253,15 +256,20 @@ public abstract class Command {
 						forbidden.add(name);
 						forbidden.add(info.getLeft());
 					}
-					
+
+					indexStart = i;
+					indexEnd = i;
 					if (toParse.isBlank() && i + 1 < args.length) {
 						i++;
+						indexEnd = i;
 						toParse = args[i];
 					}
-					
+					boolean remove = false;
 					while (i < args.length) {
-						Iku.log(fullName + ": " + toParse);
-						if (i + 1 < args.length) i++;
+						if (i + 1 < args.length) { 
+							i++;
+							remove = true;
+						}  
 						boolean leave = false;
 						for (String s : forbidden) {
 							if (args[i].startsWith(s + ":")) {
@@ -269,20 +277,29 @@ public abstract class Command {
 								break;
 							}
 						}
-						if (leave) break;
+						if (leave) {
+							indexEnd = remove ? i - 1 : i;
+							break;
+						}
 						
 						if (type.getProcessor().matches(toParse)
 								&& (i + 1 < args.length && !type.getProcessor().matches(toParse + " " + args[i]))) break;
 						
 						toParse += " " + args[i];
-						Iku.log("2" + fullName + ": " + toParse);
-						
+						if (i == args.length - 1) i++;
 					}
-					indexEnd = i;
+
 				}
-				
 			}
-			Iku.log("Returned " + toParse.strip());
+			
+			if (indexStart == -1) {
+				TypeProcessor processor = type.getProcessor();
+				Pair<Integer, Integer> indexes = processor.findFirst(args);
+				toParse = IkuUtil.arrayToString(IkuUtil.cutArray(args, indexes.getLeft(), indexes.getRight()), " ");
+				indexStart = indexes.getLeft();
+				indexEnd = indexes.getRight();
+			}
+			
 			return MutableTriple.of(toParse.strip(), indexStart, indexEnd);
 		}
 	}
