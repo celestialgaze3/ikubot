@@ -6,8 +6,8 @@ import java.util.Map;
 
 import org.bson.Document;
 
-import net.celestialgaze.IkuBot.Iku;
-import net.celestialgaze.IkuBot.IkuUtil;
+import net.celestialgaze.IkuBot.util.Iku;
+import net.celestialgaze.IkuBot.util.IkuUtil;
 import net.dv8tion.jda.api.entities.Message;
 
 public class Server extends DatabaseElement {

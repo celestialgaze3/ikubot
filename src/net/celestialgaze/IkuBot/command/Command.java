@@ -2,17 +2,24 @@ package net.celestialgaze.IkuBot.command;
 
 import java.awt.Color;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-import net.celestialgaze.IkuBot.Iku;
-import net.celestialgaze.IkuBot.IkuUtil;
+import net.celestialgaze.IkuBot.command.input.IntegerProcessor;
+import net.celestialgaze.IkuBot.command.input.StringProcessor;
+import net.celestialgaze.IkuBot.command.input.TypeProcessor;
 import net.celestialgaze.IkuBot.command.module.CommandModule;
 import net.celestialgaze.IkuBot.database.Server;
+import net.celestialgaze.IkuBot.util.Iku;
+import net.celestialgaze.IkuBot.util.IkuUtil;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Message;
+import net.dv8tion.jda.internal.utils.tuple.MutableTriple;
+import net.dv8tion.jda.internal.utils.tuple.Pair;
 
 public abstract class Command {
 	public static Map<String, Command> baseCommands = new HashMap<String, Command>();
@@ -150,6 +157,134 @@ public abstract class Command {
 	
 	public static Color getColor(Message message) {
 		return message.isFromGuild() ? Server.get(message).getColor() : Iku.EMBED_COLOR;
+	}
+	
+	public static Map<String, Pair<String, ArgumentType>> arguments = new LinkedHashMap<String, Pair<String, ArgumentType>>();
+	
+	public static void addArgument(String shorthand, String fullName, ArgumentType type) {
+		arguments.put(fullName, Pair.of(shorthand, type));
+	}
+	
+	public static Pair<Object, String[]> getArgument(String[] args, String fullName, ArgumentType type) {
+		List<String> argsList = new ArrayList<String>(Arrays.asList(args));
+		MutableTriple<Object, Integer, Integer> returnValue = ArgumentType.process(args, fullName, type);
+		int alreadyRemoved = 0;
+		for (int i = returnValue.getMiddle(); i <= returnValue.getRight() && i >= 0; i++) {
+			argsList.remove(i - alreadyRemoved);
+			alreadyRemoved++;
+		}
+		
+		return Pair.of(returnValue.getLeft(), argsList.toArray(new String[argsList.size()]));
+	}
+	
+	public static Object processArgument(Message message, String[] args, String fullName, ArgumentType type) {
+		Pair<Object, String[]> value = getArgument(args, fullName, type);
+		if (value.getLeft() == null) {
+			Iku.sendError(message, "You must provide a value for " + fullName);
+			return null;
+		}
+		
+		args = value.getRight();
+		return value.getLeft();
+	}
+	
+	public Map<String, Object> processArguments(Message message, String[] args) {
+		Map<String, Object> map = new HashMap<String, Object>();
+		
+		List<String> keys = new ArrayList<String>(arguments.keySet());
+		for (int i = 0; i < arguments.size(); i++) {
+			String name = keys.get(i);
+			Pair<String, ArgumentType> info = arguments.get(name);
+			Object processed = processArgument(message, args, name, info.getRight());
+			if (processed == null) return null;
+			map.put(name, processed);
+		}
+		return map;
+	}
+	
+	
+	public enum ArgumentType {
+		INTEGER, STRING;
+		public static MutableTriple<Object, Integer, Integer> process(String args[], String fullName, ArgumentType type) {
+			MutableTriple<String, Integer, Integer> parsable = findParsable(args, fullName, type);
+			TypeProcessor processor = type.getProcessor();
+			
+			if (processor.matches(parsable.getLeft())) {
+				return MutableTriple.of(processor.parse(parsable.getLeft()), parsable.getMiddle(),  parsable.getRight());
+			} else {
+				return MutableTriple.of(null, -1, -1);
+			}
+		}
+		
+		public TypeProcessor getProcessor() {
+			switch(this) {
+			case INTEGER:
+				return new IntegerProcessor();
+			case STRING:
+				return new StringProcessor();
+			default:
+				return null;
+			}
+		}
+		
+		public static MutableTriple<String, Integer, Integer> findParsable(String[] args, String fullName, ArgumentType type) {
+			String shorthand = arguments.get(fullName).getLeft();
+			
+			String toParse = "a";
+			int indexStart = -1;
+			int indexEnd = -1;
+			
+			for (int i = 0; i < args.length; i++) {
+				String arg = args[i];
+				
+				// ex. "n:10" and "num:10"
+				boolean found = arg.startsWith(shorthand + ":") || arg.startsWith(fullName + ":");
+				if (arg.startsWith(shorthand + ":")) {
+					toParse = arg.substring(shorthand.length() + 1);
+				} else if (arg.startsWith(fullName + ":")) {
+					toParse = arg.substring(fullName.length() + 1);
+				}
+				
+				if (found) {
+					// Compile a list of strings to stop at (to make sure we don't bleed over into other arguments)
+					List<String> forbidden = new ArrayList<String>();
+					for (String name : arguments.keySet()) {
+						Pair<String, ArgumentType> info = arguments.get(name);
+						forbidden.add(name);
+						forbidden.add(info.getLeft());
+					}
+					
+					if (toParse.isBlank() && i + 1 < args.length) {
+						i++;
+						toParse = args[i];
+					}
+					
+					while (i < args.length) {
+						Iku.log(fullName + ": " + toParse);
+						if (i + 1 < args.length) i++;
+						boolean leave = false;
+						for (String s : forbidden) {
+							if (args[i].startsWith(s + ":")) {
+								leave = true;
+								break;
+							}
+						}
+						if (leave) break;
+						
+						if (type.getProcessor().matches(toParse)
+								&& (i + 1 < args.length && !type.getProcessor().matches(toParse + " " + args[i]))) break;
+						
+						toParse += " " + args[i];
+						Iku.log("2" + fullName + ": " + toParse);
+						
+					}
+					indexEnd = i;
+				}
+				
+			}
+			Iku.log("Returned " + toParse.strip());
+			return MutableTriple.of(toParse.strip(), indexStart, indexEnd);
+		}
 	}
 	
 	public static String getQuoteArg(String[] args, int i) {

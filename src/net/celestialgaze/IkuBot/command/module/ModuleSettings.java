@@ -2,8 +2,8 @@ package net.celestialgaze.IkuBot.command.module;
 
 import org.bson.Document;
 
-import net.celestialgaze.IkuBot.IkuUtil;
 import net.celestialgaze.IkuBot.database.Server;
+import net.celestialgaze.IkuBot.util.IkuUtil;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Role;
 

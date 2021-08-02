@@ -6,6 +6,7 @@ import net.celestialgaze.IkuBot.database.BotStats;
 import net.celestialgaze.IkuBot.database.Database;
 import net.celestialgaze.IkuBot.listeners.MessageListener;
 import net.celestialgaze.IkuBot.listeners.MiscListener;
+import net.celestialgaze.IkuBot.util.Iku;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.entities.Activity;

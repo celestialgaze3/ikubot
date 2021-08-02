@@ -1,9 +1,9 @@
 package net.celestialgaze.IkuBot.command.commands.modules.custom;
 
-import net.celestialgaze.IkuBot.Iku;
-import net.celestialgaze.IkuBot.IkuUtil;
 import net.celestialgaze.IkuBot.command.Command;
 import net.celestialgaze.IkuBot.command.module.CustomCmdsModule;
+import net.celestialgaze.IkuBot.util.Iku;
+import net.celestialgaze.IkuBot.util.IkuUtil;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Message;
 

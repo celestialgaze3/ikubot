@@ -1,7 +1,7 @@
 package net.celestialgaze.IkuBot.command;
 
-import net.celestialgaze.IkuBot.Iku;
-import net.celestialgaze.IkuBot.IkuUtil;
+import net.celestialgaze.IkuBot.util.Iku;
+import net.celestialgaze.IkuBot.util.IkuUtil;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.MessageEmbed;
 

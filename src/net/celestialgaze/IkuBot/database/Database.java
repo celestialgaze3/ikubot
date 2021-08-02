@@ -7,7 +7,7 @@ import com.mongodb.client.MongoClients;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 
-import net.celestialgaze.IkuBot.Iku;
+import net.celestialgaze.IkuBot.util.Iku;
 
 public class Database {
 	

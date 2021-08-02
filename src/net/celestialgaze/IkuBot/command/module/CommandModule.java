@@ -3,9 +3,9 @@ package net.celestialgaze.IkuBot.command.module;
 import java.util.HashMap;
 import java.util.Map;
 
-import net.celestialgaze.IkuBot.Iku;
 import net.celestialgaze.IkuBot.command.Command;
 import net.celestialgaze.IkuBot.command.module.ModuleSettings.Type;
+import net.celestialgaze.IkuBot.util.Iku;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;

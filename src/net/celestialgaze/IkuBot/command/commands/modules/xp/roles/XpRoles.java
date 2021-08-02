@@ -5,8 +5,8 @@ import java.util.Map;
 
 import org.bson.Document;
 
-import net.celestialgaze.IkuBot.IkuUtil;
 import net.celestialgaze.IkuBot.command.MasterCommand;
+import net.celestialgaze.IkuBot.util.IkuUtil;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Role;

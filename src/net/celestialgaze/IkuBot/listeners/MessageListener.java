@@ -1,9 +1,9 @@
 package net.celestialgaze.IkuBot.listeners;
 
-import net.celestialgaze.IkuBot.Iku;
 import net.celestialgaze.IkuBot.database.BotStats;
 import net.celestialgaze.IkuBot.handlers.PMHandler;
 import net.celestialgaze.IkuBot.handlers.ServerMessageHandler;
+import net.celestialgaze.IkuBot.util.Iku;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 

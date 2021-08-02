@@ -2,8 +2,8 @@ package net.celestialgaze.IkuBot.command;
 
 import org.bson.Document;
 
-import net.celestialgaze.IkuBot.Iku;
 import net.celestialgaze.IkuBot.database.IDocSavable;
+import net.celestialgaze.IkuBot.util.Iku;
 import net.dv8tion.jda.api.entities.Message;
 
 public class TextCommand extends Command implements IDocSavable {

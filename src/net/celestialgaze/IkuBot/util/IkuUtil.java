@@ -1,4 +1,4 @@
-package net.celestialgaze.IkuBot;
+package net.celestialgaze.IkuBot.util;
 
 import java.awt.Color;
 import java.time.Instant;

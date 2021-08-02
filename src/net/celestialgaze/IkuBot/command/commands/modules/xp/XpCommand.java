@@ -1,10 +1,10 @@
 package net.celestialgaze.IkuBot.command.commands.modules.xp;
 
-import net.celestialgaze.IkuBot.Iku;
 import net.celestialgaze.IkuBot.command.MasterCommand;
 import net.celestialgaze.IkuBot.command.commands.modules.xp.roles.XpRoles;
 import net.celestialgaze.IkuBot.command.module.XpModule;
 import net.celestialgaze.IkuBot.database.UserProfile;
+import net.celestialgaze.IkuBot.util.Iku;
 import net.dv8tion.jda.api.entities.Message;
 
 public class XpCommand extends MasterCommand {

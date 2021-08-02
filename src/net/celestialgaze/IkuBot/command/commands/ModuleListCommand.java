@@ -1,10 +1,10 @@
 package net.celestialgaze.IkuBot.command.commands;
 
-import net.celestialgaze.IkuBot.IkuUtil;
 import net.celestialgaze.IkuBot.command.PagedCommand;
 import net.celestialgaze.IkuBot.command.PagedMessage;
 import net.celestialgaze.IkuBot.command.module.CommandModule;
 import net.celestialgaze.IkuBot.command.module.CommandModules;
+import net.celestialgaze.IkuBot.util.IkuUtil;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.MessageEmbed;

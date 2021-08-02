@@ -1,9 +1,9 @@
 package net.celestialgaze.IkuBot.handlers;
 
-import net.celestialgaze.IkuBot.Iku;
 import net.celestialgaze.IkuBot.command.CommandInterpreter;
 import net.celestialgaze.IkuBot.command.Commands;
 import net.celestialgaze.IkuBot.database.BotStats;
+import net.celestialgaze.IkuBot.util.Iku;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 

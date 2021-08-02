@@ -1,4 +1,4 @@
-package net.celestialgaze.IkuBot;
+package net.celestialgaze.IkuBot.util;
 
 import java.awt.Color;
 
@@ -71,8 +71,14 @@ public class Iku {
 	 * @param str String to log
 	 */
 	public static void log(String str) {
-		System.out.println("[" + IkuUtil.getTimestamp() + "] [INFO] " + str);
-		if (str.contains("727")) System.out.println("WYSI");
+		String output = "[" + IkuUtil.getTimestamp() + "] [INFO] " + str;
+		System.out.println(output);
+		if (output.contains("727")) System.out.println("WYSI");
+		if (Iku.bot != null) Iku.bot.getGuildById("720792335088353301").getTextChannelById("732709637278924910").sendMessage(output).queue(response -> {
+			if (response.getContentRaw().contains("727")) {
+				response.getChannel().sendMessage("WYSI").queue();
+			}
+		});
 	}
 	
 	/**
@@ -80,7 +86,14 @@ public class Iku {
 	 * @param str Error message
 	 */
 	public static void error(String str) {
-		System.out.println("[" + IkuUtil.getTimestamp() + "] [ERROR] " + str);
+		String output = "[" + IkuUtil.getTimestamp() + "] [ERROR] " + str;
+		System.out.println(output);
+		if (output.contains("727")) System.out.println("WYSI");
+		if (Iku.bot != null) Iku.bot.getGuildById("720792335088353301").getTextChannelById("732709637278924910").sendMessage(output).queue(response -> {
+			if (response.getContentRaw().contains("727")) {
+				response.getChannel().sendMessage("WYSI").queue();
+			}
+		});
 	}
 	
 	/**

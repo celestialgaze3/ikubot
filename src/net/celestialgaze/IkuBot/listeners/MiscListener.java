@@ -1,7 +1,7 @@
 package net.celestialgaze.IkuBot.listeners;
 
-import net.celestialgaze.IkuBot.Iku;
 import net.celestialgaze.IkuBot.command.PagedMessage;
+import net.celestialgaze.IkuBot.util.Iku;
 import net.dv8tion.jda.api.events.message.react.MessageReactionAddEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 
